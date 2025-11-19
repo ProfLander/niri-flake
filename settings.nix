@@ -1787,6 +1787,21 @@
 
               mod-key = nullable types.str;
               mod-key-nested = nullable types.str;
+
+              button-scroll-factor =
+              nullable (
+                  types.either float-or-int (record {
+                  horizontal = optional float-or-int 1.0;
+                  vertical = optional float-or-int 1.0;
+                  })
+              )
+              // {
+                  description = ''
+                  For all scroll events triggered by a continuous source, the scroll distance is multiplied by this factor.
+              
+                  This is not a libinput property, but rather a niri-specific one.
+                  '';
+              };
             };
           }
 
@@ -3585,6 +3600,7 @@
           (toggle "disable-power-key-handling" cfg.input.power-key-handling [ ])
           (nullable leaf "mod-key" cfg.input.mod-key)
           (nullable leaf "mod-key-nested" cfg.input.mod-key-nested)
+          (nullable leaf "button-scroll-factor" cfg.input.button-scroll-factor)
         ])
 
         (each' cfg.outputs (cfg: [
