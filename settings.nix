@@ -575,6 +575,13 @@
         bottom-left = required types.float;
       });
 
+      background-effect-rule = nullable (record {
+        xray = nullable types.bool;
+        blur = nullable types.bool;
+        noise = required float-or-int;
+        saturation = required float-or-int;
+      });
+
       shadow-descriptions =
         let
           css-box-shadow =
@@ -2790,6 +2797,11 @@
                     opacity = nullable types.float // {
                       description = window-rule-descriptions.opacity;
                     };
+                    background-effect = background-effect-rule // {
+                      description = ''
+                        Background effects. X-Ray, Blur, Saturation.
+                      '';
+                    };
                   }
                   (
                     let
@@ -3498,6 +3510,13 @@
           cfg.bottom-left
         ];
 
+        background-effect-rule = map' plain' (cfg: [
+          (nullable leaf "blur" cfg.blur or null)
+          (nullable leaf "xray" cfg.xray or null)
+          (nullable leaf "noise" cfg.noise or null)
+          (nullable leaf "saturation" cfg.saturation or null)
+        ]);
+
         transform =
           cfg:
           let
@@ -3744,6 +3763,7 @@
             (shadow-rule "shadow" cfg.shadow)
             (tab-indicator-rule "tab-indicator" cfg.tab-indicator)
             (nullable leaf "opacity" cfg.opacity)
+            (background-effect-rule "background-effect" cfg.background-effect)
             (nullable leaf "min-width" cfg.min-width)
             (nullable leaf "max-width" cfg.max-width)
             (nullable leaf "min-height" cfg.min-height)
